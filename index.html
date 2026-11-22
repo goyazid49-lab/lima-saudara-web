@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIMA SAUDARA</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #0b1120;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 16px 12px;
+    }
+    .brand { font-size: 22px; font-weight: 800; }
+    .brand span { color: #38bdf8; }
+    .badge {
+      background: #3b2a7a;
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .status {
+      margin: 0 16px 8px;
+      padding: 12px 14px;
+      border: 1px solid #166534;
+      background: #0f2a1d;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #86efac;
+      gap: 8px;
+    }
+    .status .date { font-size: 13px; color: #86efac; white-space: nowrap; }
+    .section-title {
+      margin: 22px 16px 12px;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 0 16px;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #2b3a52;
+      border-radius: 18px;
+      padding: 22px 12px;
+      text-align: center;
+      cursor: pointer;
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.1s ease;
+    }
+    .card:active { transform: scale(0.97); }
+    .card .icon { font-size: 34px; line-height: 1; }
+    .card .title { font-size: 16px; font-weight: 600; line-height: 1.3; }
+    .card .desc { font-size: 12px; color: #94a3b8; line-height: 1.4; }
+    .card.wide {
+      grid-column: 1 / -1;
+      min-height: 0;
+      flex-direction: row;
+      text-align: left;
+      justify-content: flex-start;
+      padding: 18px 16px;
+    }
+    .card.wide .text { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .card.wide .icon { font-size: 28px; }
+    .card.wide .title { font-size: 16px; }
+    .card.wide .chev { color: #64748b; font-size: 22px; }
+    .card.single { grid-column: 1 / 2; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">LIMA <span>SAUDARA</span></div>
+    <div class="badge" id="role">PENGGUNA</div>
+  </header>
+
+  <div class="status">
+    <span>✅ Masa aktif berlangsung</span>
+    <span class="date" id="expiry">s/d 30/12/2026</span>
+  </div>
+
+  <div class="section-title">🔍 Fitur Aktif</div>
+  <div class="grid">
+    <div class="card" data-feature="Cek Lasik">
+      <div class="icon">🏛️</div>
+      <div class="title">Cek Lasik</div>
+      <div class="desc">Cek Data Mentah</div>
+    </div>
+    <div class="card" data-feature="Klaim Lapak Asik (Uji Coba)">
+      <div class="icon">📋</div>
+      <div class="title">Klaim Lapak Asik (Uji Coba)</div>
+      <div class="desc">Daftar Lasik Tanpa Kamera non vermuk</div>
+    </div>
+    <div class="card" data-feature="Cek Terdaftar JMO">
+      <div class="icon">🔍</div>
+      <div class="title">Cek Terdaftar JMO</div>
+      <div class="desc">Cek akun JMO</div>
+    </div>
+    <div class="card" data-feature="Buka Sensor">
+      <div class="icon">🔓</div>
+      <div class="title">Buka Sensor</div>
+      <div class="desc">Buka KPJ Sensor · aktif 06.00–20.00 WIB</div>
+    </div>
+    <div class="card" data-feature="Jambak Akun">
+      <div class="icon">🚪</div>
+      <div class="title">Jambak Akun</div>
+      <div class="desc">Logout paksa JMO di perangkat lain</div>
+    </div>
+    <div class="card" data-feature="NIK to Nama &amp; Lokasi">
+      <div class="icon">🪪</div>
+      <div class="title">NIK to Nama &amp; Lokasi</div>
+      <div class="desc">Cek Nama dan Lokasi dari NIK (Non DPT)</div>
+    </div>
+    <div class="card single" data-feature="Edit KPJ">
+      <div class="icon">🪪</div>
+      <div class="title">Edit KPJ</div>
+      <div class="desc">Buat / ubah kartu KPJ peserta BPJS</div>
+    </div>
+  </div>
+
+  <div class="section-title">🛡️ Administrasi</div>
+  <div class="grid">
+    <div class="card wide" id="admin-users" data-feature="Kelola User">
+      <div class="icon">👥</div>
+      <div class="text">
+        <div class="title">Kelola User</div>
+        <div class="desc">Update masa aktif &amp; role member</div>
+      </div>
+      <div class="chev">›</div>
+    </div>
+    <div class="card wide" id="admin-broadcast" data-feature="Broadcast">
+      <div class="icon">📢</div>
+      <div class="text">
+        <div class="title">Broadcast</div>
+        <div class="desc">Kirim pesan blast ke member</div>
+      </div>
+      <div class="chev">›</div>
+    </div>
+  </div>
+
+  <div class="section-title">⚙️ Lainnya</div>
+  <div class="grid">
+    <div class="card wide" data-feature="Profil Saya">
+      <div class="icon">📋</div>
+      <div class="text">
+        <div class="title">Profil Saya</div>
+        <div class="desc">Data akun &amp; status keanggotaan</div>
+      </div>
+      <div class="chev">›</div>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram && window.Telegram.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    // Tanggal akhir masa aktif sementara ditetapkan di sini.
+    const expiry = new Date("2026-12-30T23:59:59+07:00");
+    const days = Math.max(0, Math.ceil((expiry - new Date()) / 86400000));
+    document.getElementById("expiry").textContent = `s/d 30/12/2026 (${days} hari lagi)`;
+
+    // Role dan keanggotaan belum terhubung ke database; tampilan ini hanya placeholder.
+    const isAdmin = true;
+    if (isAdmin) {
+      document.getElementById("role").textContent = "ADMIN";
+    } else {
+      document.getElementById("admin-users").classList.add("hidden");
+      document.getElementById("admin-broadcast").classList.add("hidden");
+    }
+
+    document.querySelectorAll(".card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const name = card.dataset.feature;
+        const message = `Fitur "${name}" belum terhubung ke layanan resmi.`;
+        if (tg && tg.showAlert) {
+          tg.showAlert(message);
+        } else {
+          alert(message);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
